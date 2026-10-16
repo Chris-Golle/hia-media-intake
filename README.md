@@ -16,7 +16,7 @@ Photographer ──▶ Google Form ──▶ onFormSubmit (Apps Script)
 2. Create files `Config.gs`, `Setup.gs`, `Intake.gs` and paste the contents. Project Settings → show `appsscript.json` → paste.
 3. In `Config.gs`, set `ROOT_FOLDER_ID` to the test folder's ID.
 4. Run `setup()` and approve permissions. The log prints the form and sheet links.
-5. **Manual step:** open the form editor and add a **File upload** question under the "Failai / Files" header. Apps Script cannot create this question type. Suggested limits: images and videos, up to 10 files, 1 GB each.
+5. **Manual step:** open the form editor and add a **File upload** question under the "Failai / Files" header. Apps Script cannot create this question type. Set: images and videos, 10 files (Google's maximum per question), 10 GB per file. For bigger batches, add more upload questions ("Nuotraukos 1–10", "11–20", …); the handler collects files from all of them and numbers them in one sequence.
 6. Submit a test response, then check the Index sheet and `Media/` folder.
 
 `reprocessLastResponse()` re-runs the handler for debugging. `reset()` removes the trigger and stored IDs.

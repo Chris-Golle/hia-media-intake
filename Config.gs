@@ -32,7 +32,7 @@ const CONFIG = {
 const Q = {
   photographer: 'Fotografas / Photographer',
   event: 'Pora arba renginys / Couple or event',
-  date: 'Ceremonijos data / Ceremony date',
+  date: 'Ceremonijos data / Ceremony date', // the form shows the date in the respondent's locale (YYYY-MM-DD in LT); the handler always receives YYYY-MM-DD
   location: 'Vieta / Location',
   type: 'Ceremonijos tipas / Ceremony type',
   caption: 'Aprašymas / Caption',

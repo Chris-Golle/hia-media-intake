@@ -1,8 +1,7 @@
 /**
  * On every form submission:
  *  1. files move to Media/<year>/<date>_<location>_<event>/ and are renamed consistently
- *  2. the caption is translated into LT / LV / ET / EN
- *  3. one row per file is written to the Index sheet
+ *  2. one row per file is written to the Index sheet
  */
 function onFormSubmit(e) {
   const lock = LockService.getScriptLock();
@@ -40,8 +39,10 @@ function processResponse_(response) {
   const media = DriveApp.getFolderById(prop_('MEDIA_FOLDER_ID'));
   const batch = getOrCreateFolder_(getOrCreateFolder_(media, date.slice(0, 4)), batchName);
 
-  const captions = translateCaption_(answers[Q.caption], answers[Q.captionLang]);
   const consentGiven = (answers[Q.consent] || []).length > 0;
+  // Funerals and memorials going International need a human check before use.
+  const review = answers[Q.type] === CONFIG.FUNERAL_TYPE &&
+    (answers[Q.markets] || []).includes(CONFIG.INTERNATIONAL);
 
   const base = {
     submitted: response.getTimestamp(),
@@ -54,7 +55,7 @@ function processResponse_(response) {
     batchLink: link_(batch.getUrl(), batchName),
     video: answers[Q.video] || '',
     markets: (answers[Q.markets] || []).join(', '),
-    captions: captions,
+    caption: answers[Q.caption] || '',
     consent: consentGiven ? 'yes' : 'NO',
   };
 
@@ -71,6 +72,7 @@ function processResponse_(response) {
     } catch (err) {
       status = 'not moved: ' + err.message;
     }
+    if (review && status === 'ok') status = 'review: funeral + International';
     rows.push(row_(base, link_(file.getUrl(), file.getName()), original, status));
   });
 
@@ -85,31 +87,9 @@ function row_(b, fileLink, originalName, status) {
   return [
     b.submitted, b.photographer, b.email, b.event, b.date, b.location, b.type,
     fileLink, originalName, b.batchLink, b.video, b.markets,
-    ...CONFIG.CAPTION_LANGS.map(l => b.captions[l] || ''),
+    b.caption,
     b.consent, CONFIG.CONSENT_VERSION, status,
   ];
-}
-
-/**
- * Demo: Apps Script's built-in translator.
- * Production: swap for a call to the existing Cloud Run translation-service.
- */
-function translateCaption_(text, langLabel) {
-  const out = {};
-  if (!text) return out;
-  const source = (langLabel || 'LT').toLowerCase();
-  CONFIG.CAPTION_LANGS.forEach(target => {
-    if (target === source) {
-      out[target] = text;
-      return;
-    }
-    try {
-      out[target] = LanguageApp.translate(text, source, target);
-    } catch (err) {
-      out[target] = '[translation failed]';
-    }
-  });
-  return out;
 }
 
 // --- helpers ---

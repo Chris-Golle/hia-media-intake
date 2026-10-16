@@ -65,10 +65,7 @@ function buildForm_(form) {
 
   form.addParagraphTextItem()
     .setTitle(Q.caption)
-    .setHelpText('1–2 sakiniai. Bus išversta automatiškai. / 1–2 sentences. Translated automatically.');
-  form.addMultipleChoiceItem()
-    .setTitle(Q.captionLang)
-    .setChoiceValues(CONFIG.CAPTION_LANGS.map(l => l.toUpperCase()));
+    .setHelpText('1–2 sakiniai. / 1–2 sentences.');
 
   form.addCheckboxItem()
     .setTitle(Q.markets)

@@ -22,9 +22,10 @@ const CONFIG = {
 
   // Countries where the material may be used (consent scope).
   MARKETS: ['LT', 'LV', 'EE', 'International (EN)'],
+  INTERNATIONAL: 'International (EN)',
 
-  // Caption languages, in index column order.
-  CAPTION_LANGS: ['lt', 'lv', 'et', 'en'],
+  // Sensitive ceremony type: flagged for review if marked International.
+  FUNERAL_TYPE: 'Atsisveikinimas / Funeral or memorial',
 };
 
 // Question titles. The submit handler reads answers by these titles, so edit them here, not in the form editor.
@@ -35,7 +36,6 @@ const Q = {
   location: 'Vieta / Location',
   type: 'Ceremonijos tipas / Ceremony type',
   caption: 'Aprašymas / Caption',
-  captionLang: 'Aprašymo kalba / Caption language',
   markets: 'Kur galima naudoti? / Where may this be used?',
   video: 'Vaizdo įrašo nuoroda / Video link',
   consent: 'Sutikimas / Consent',
@@ -48,6 +48,6 @@ const CONSENT_TEXT =
 const INDEX_HEADERS = [
   'Submitted', 'Photographer', 'Email', 'Couple / event', 'Ceremony date', 'Location', 'Ceremony type',
   'File', 'Original name', 'Batch folder', 'Video link', 'Markets',
-  'Caption LT', 'Caption LV', 'Caption ET', 'Caption EN',
+  'Caption',
   'Consent', 'Consent version', 'Status',
 ];
